@@ -13,7 +13,7 @@ blp = Blueprint("Tags", "tags", description="Operations on tags")
 
 @blp.route("/store/<int:store_id>/tag")
 class TagsInStore(MethodView):
-    @jwt_required()
+    # @jwt_required()
     @blp.response(200, TagSchema(many=True))
     def get(self, store_id):
         store = StoreModel.query.get_or_404(store_id)
