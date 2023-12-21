@@ -52,4 +52,4 @@ class UserSchema(Schema):
 
 
 class UserRegisterSchema(UserSchema):
-    email = field.Str(required=True)
+    email = fields.Str(required=True)
