@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 
 flask db upgrade
 
