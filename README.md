@@ -13,6 +13,49 @@ The API is containerized using Docker, ensuring easy deployment and scalability.
   This UI provides an interactive way to explore and test the API's capabilities.
 ![Store API](/Store_API.jpg "Screenshot of the Swagger UI")
 **Note**: The server may take up to 25 seconds to restart if no requests have been sent to the API for a while.
+  
+
+## User Guide
+
+1. ### Registration
+
+**Send a POST request to the registration endpoint**
+
+   The registration endpoint is `https://rest-api-jiayong.onrender.com/register`.
+   The request body should be a JSON object that includes the new user's details. For example:
+
+   ```json
+   {
+       "username": "Your_user_name",
+       "email": "Your_email",
+       "password": "Your_password"
+   }
+   ```
+   If the registration is successful, you'll receive a response "User created successfully."
+   
+2. ### Login and get tokens 
+**Send a POST request to the registration endpoint**
+
+The login endpoint is t `https://rest-api-jiayong.onrender.com/login`.
+The request body is the same as in the registration endpoint.
+   ```json
+   {
+       "username": "Your_user_name",
+       "email": "Your_email",
+       "password": "Your_password"
+   }
+   ```
+   If the authentication is successful, you will receive a response containing two JWT tokens: an access token for authorizing subsequent API requests and a refresh token for renewing authentication when needed.
+
+3. ### Use the token to interact with the Store, Item, and Tag endpoints..
+**Include the JWT token in the Authorization header**
+   
+   For subsequent requests to the API, include the JWT token in the Authorization header. The header should look something like this:
+   ``` bash
+   Authorization: Bearer your-jwt-token
+   ```
+   Replace your-jwt-token with the actual token you received from the authentication endpoint.
+   
 
 ## Database
 
