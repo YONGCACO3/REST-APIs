@@ -7,7 +7,7 @@ from flask_jwt_extended import (
     get_jwt,
     jwt_required,
 )
-from flask import current_app
+
 from passlib.hash import pbkdf2_sha256
 from sqlalchemy import or_
 from rq import Queue
@@ -15,7 +15,7 @@ import redis
 from db import db
 from models import UserModel
 from schemas import UserSchema, UserRegisterSchema
-from tasks import send_user_registration_email
+
 
 from blocklist import BLOCKLIST
 import requests
@@ -23,8 +23,16 @@ import os
 
 blp = Blueprint("Users", "users", description="Operations on users")
 
-connecetion = redis.from_url(os.getenv("REDIS_URL"))
-queue = Queue("email", connection=connecetion)
+
+def send_simple_message(to, subject, body):
+    domain = os.getenv("MAILGUN_DOMAIN")
+    return requests.post(
+        f"https://api.mailgun.net/v3/{domain}/messages",
+        auth=("api", os.getenv("MAILGUN_API_KEY")),
+        data={"from": "Jiayong Lu <mailgun@{domain}>",
+                      "to": [to],
+                      "subject": subject,
+              "text": body})
 
 
 @blp.route("/register")
@@ -47,8 +55,11 @@ class UserRegister(MethodView):
         db.session.add(user)
         db.session.commit()
 
-        current_app.queue.enqueue(
-            send_user_registration_email, user.email, user.username)
+        send_simple_message(
+            to=user.email,
+            subject="Welcome to Stores REST API",
+            body=f"Hi {user.username},\n\nYou have successfully registered to Stores REST API.\n\nBest,\nJiayong Lu"
+        )
 
         return {"message": "User created successfully."}, 201
 
