@@ -10,7 +10,8 @@ from flask_jwt_extended import (
 from flask import current_app
 from passlib.hash import pbkdf2_sha256
 from sqlalchemy import or_
-
+from rq import Queue
+import redis
 from db import db
 from models import UserModel
 from schemas import UserSchema, UserRegisterSchema
@@ -21,6 +22,9 @@ import requests
 import os
 
 blp = Blueprint("Users", "users", description="Operations on users")
+
+connecetion = redis.from_url(os.getenv("REDIS_URL"))
+queue = Queue("email", connection=connecetion)
 
 
 @blp.route("/register")
