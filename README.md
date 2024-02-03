@@ -12,7 +12,7 @@ The API is containerized using Docker, ensuring easy deployment and scalability.
 
   This UI provides an interactive way to explore and test the API's capabilities.
 ![Store API](/Store_API.jpg "Screenshot of the Swagger UI")
-**Note**: The server may take up to 25 seconds to restart if no requests have been sent to the API for a while.
+**Note**: The server may take up to 50 seconds to restart if no requests have been sent to the API for a while.
   
 
 ## User Guide
